@@ -6,7 +6,9 @@
 package co.edu.uniandes.isis2503.competitors.service;
 
 import co.edu.uniandes.isis2503.competitors.logic.CompetitorsLogic;
+import co.edu.uniandes.isis2503.competitors.logic.dto.CompetitorDTO;
 import co.edu.uniandes.isis2503.competitors.persistence.entity.CompetitorEntity;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -30,6 +32,8 @@ import org.json.simple.JSONObject;
 @Produces(MediaType.APPLICATION_JSON)
 public class CompetitorService {
 
+  
+    final protected List<CompetitorDTO> competitors = new ArrayList();
     protected CompetitorsLogic competitorsLogic;
 
     @PostConstruct
@@ -39,12 +43,26 @@ public class CompetitorService {
 
     @GET
     public Response getAll() {
-        return competitorsLogic.getAll();
+        if (competitors.isEmpty()){
+            generateCompetitors();
+        }
+        return Response.status(Response.Status.OK).entity(competitors).build();        
     }
 
     @POST
-    public Response createCompetitor(CompetitorEntity competitor) {
-        return competitorsLogic.createCompetitor(competitor);
+    public Response createCompetitor(CompetitorDTO competitor) {
+        competitors.add(competitor);
+        return Response.status(Response.Status.OK).entity("Competidor " + competitor.getName()+ " registrado").build();
+    }
+    
+    public void generateCompetitors (){
+        for (int i = 0; i<15;i++){
+            CompetitorDTO c = new CompetitorDTO("Juan"+i, "Perez", i+1, "311"+i,"Colombia");
+            competitors.add(c);
+        }      
     }
 
 }
+
+
+    

@@ -34,6 +34,14 @@ public class CompetitorDTO {
     public CompetitorDTO(){
         
     }
+    
+    public CompetitorDTO(String name1,String surName1, int age1, String cel, String country1){
+        name = name1;
+        surname = surName1;
+        age = age1;
+        telephone = cel;
+        country = country1;
+    }
 
     public String getName() {
         return name;
